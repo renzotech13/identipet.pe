@@ -12,7 +12,10 @@ function str(v: FormDataEntryValue | null): string {
 }
 
 /** Devuelve un error o redirige a la página de gracias (no retorna en éxito). */
-export async function submitRegistro(formData: FormData): Promise<RegistroError | undefined> {
+export async function submitRegistro(
+  _prev: RegistroError | undefined,
+  formData: FormData
+): Promise<RegistroError | undefined> {
   const supabase = await createClient();
   const {
     data: { user },

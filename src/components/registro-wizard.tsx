@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { PawPrint, Upload } from "lucide-react";
@@ -9,33 +9,19 @@ import { submitRegistro } from "@/app/registro-mascota/actions";
 
 export function RegistroWizard({ loggedIn, userLabel }: { loggedIn: boolean; userLabel: string }) {
   const router = useRouter();
-  const formRef = useRef<HTMLFormElement>(null);
   const [step, setStep] = useState(loggedIn ? 2 : 1);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [state, formAction, pending] = useActionState(submitRegistro, undefined);
   const [fotoName, setFotoName] = useState("Ningún archivo seleccionado");
   const [fotoPreview, setFotoPreview] = useState<string | null>(null);
   const [contactos, setContactos] = useState([0]);
   const [hasChip, setHasChip] = useState(false);
 
   const pago = registroConfig.pago;
+  const error = state?.error ?? null;
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!formRef.current) return;
-    setLoading(true);
-    setError(null);
-
-    const fd = new FormData(formRef.current);
-    // En éxito, la acción de servidor redirige; solo retorna aquí si hay error.
-    const res = await submitRegistro(fd);
-
-    if (res?.error) {
-      setError(res.error);
-      setLoading(false);
-      if (res.redirectLogin) router.push("/login");
-    }
-  }
+  useEffect(() => {
+    if (state?.redirectLogin) router.push("/login");
+  }, [state, router]);
 
   const input = "w-full rounded-lg border border-border px-4 py-3 outline-none focus:border-primary";
   const label = "mb-1 block text-sm font-semibold text-secondary";
@@ -65,7 +51,7 @@ export function RegistroWizard({ loggedIn, userLabel }: { loggedIn: boolean; use
 
       {error && <div className="mb-5 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>}
 
-      <form ref={formRef} onSubmit={handleSubmit} className="space-y-5">
+      <form action={formAction} className="space-y-5">
         {/* PASO 1: DUEÑO */}
         {!loggedIn && (
           <div className={step === 1 ? "block space-y-5" : "hidden"}>
@@ -199,8 +185,8 @@ export function RegistroWizard({ loggedIn, userLabel }: { loggedIn: boolean; use
           </div>
           <div className="flex justify-between">
             <button type="button" onClick={() => setStep(2)} className="rounded-lg border border-border px-5 py-3 font-semibold text-secondary">Atrás</button>
-            <button type="submit" disabled={loading} className="rounded-lg bg-accent px-7 py-3 font-semibold text-white hover:bg-accent-dark disabled:opacity-60">
-              {loading ? "Registrando…" : "Registrar mascota"}
+            <button type="submit" disabled={pending} className="rounded-lg bg-accent px-7 py-3 font-semibold text-white hover:bg-accent-dark disabled:opacity-60">
+              {pending ? "Registrando…" : "Registrar mascota"}
             </button>
           </div>
         </div>
