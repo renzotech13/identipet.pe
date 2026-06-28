@@ -1,18 +1,18 @@
 "use server";
 
+import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { registroConfig } from "@/lib/config";
 
-export type RegistroResult =
-  | { ok: true; petId: number; needSignIn: boolean }
-  | { ok: false; error: string; redirectLogin?: boolean };
+export type RegistroError = { error: string; redirectLogin?: boolean };
 
 function str(v: FormDataEntryValue | null): string {
   return typeof v === "string" ? v.trim() : "";
 }
 
-export async function submitRegistro(formData: FormData): Promise<RegistroResult> {
+/** Devuelve un error o redirige a la página de gracias (no retorna en éxito). */
+export async function submitRegistro(formData: FormData): Promise<RegistroError | undefined> {
   const supabase = await createClient();
   const {
     data: { user },
@@ -29,9 +29,9 @@ export async function submitRegistro(formData: FormData): Promise<RegistroResult
     const apellido = str(formData.get("apellido"));
     const celular = str(formData.get("celular"));
 
-    if (!nombre || !apellido) return { ok: false, error: "Ingresa tu nombre y apellido." };
-    if (!email || !/^\S+@\S+\.\S+$/.test(email)) return { ok: false, error: "Ingresa un correo válido." };
-    if (password.length < 8) return { ok: false, error: "La contraseña debe tener al menos 8 caracteres." };
+    if (!nombre || !apellido) return { error:"Ingresa tu nombre y apellido." };
+    if (!email || !/^\S+@\S+\.\S+$/.test(email)) return { error:"Ingresa un correo válido." };
+    if (password.length < 8) return { error:"La contraseña debe tener al menos 8 caracteres." };
 
     const { data: created, error: createErr } = await admin.auth.admin.createUser({
       email,
@@ -49,17 +49,20 @@ export async function submitRegistro(formData: FormData): Promise<RegistroResult
 
     if (createErr || !created?.user) {
       if (createErr?.message?.toLowerCase().includes("already")) {
-        return { ok: false, error: "Ya tienes una cuenta con ese correo. Inicia sesión.", redirectLogin: true };
+        return { error:"Ya tienes una cuenta con ese correo. Inicia sesión.", redirectLogin: true };
       }
-      return { ok: false, error: "No se pudo crear la cuenta. Inténtalo de nuevo." };
+      return { error:"No se pudo crear la cuenta. Inténtalo de nuevo." };
     }
     ownerId = created.user.id;
+
+    // Iniciar sesión en el servidor para establecer las cookies de sesión
+    await supabase.auth.signInWithPassword({ email, password });
   }
 
   // ---- Datos de la mascota ----
   const nombreMascota = str(formData.get("mascota_nombre"));
-  if (!nombreMascota) return { ok: false, error: "Ingresa el nombre de tu mascota." };
-  if (!formData.get("terminos")) return { ok: false, error: "Debes aceptar los términos." };
+  if (!nombreMascota) return { error:"Ingresa el nombre de tu mascota." };
+  if (!formData.get("terminos")) return { error:"Debes aceptar los términos." };
 
   const pesoStr = str(formData.get("peso"));
   const peso = pesoStr ? Number(pesoStr) : null;
@@ -111,7 +114,7 @@ export async function submitRegistro(formData: FormData): Promise<RegistroResult
     .single();
 
   if (petErr || !pet) {
-    return { ok: false, error: "No se pudo registrar la mascota. Inténtalo de nuevo." };
+    return { error:"No se pudo registrar la mascota. Inténtalo de nuevo." };
   }
 
   // ---- Contactos de emergencia ----
@@ -141,5 +144,5 @@ export async function submitRegistro(formData: FormData): Promise<RegistroResult
     estado: "pendiente",
   });
 
-  return { ok: true, petId: pet.id as number, needSignIn: !user };
+  redirect(`/registro-mascota/gracias/${pet.id}`);
 }

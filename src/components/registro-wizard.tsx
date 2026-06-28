@@ -4,7 +4,6 @@ import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { PawPrint, Upload } from "lucide-react";
-import { createClient } from "@/lib/supabase/client";
 import { registroConfig, money } from "@/lib/config";
 import { submitRegistro } from "@/app/registro-mascota/actions";
 
@@ -28,24 +27,14 @@ export function RegistroWizard({ loggedIn, userLabel }: { loggedIn: boolean; use
     setError(null);
 
     const fd = new FormData(formRef.current);
+    // En éxito, la acción de servidor redirige; solo retorna aquí si hay error.
     const res = await submitRegistro(fd);
 
-    if (!res.ok) {
+    if (res?.error) {
       setError(res.error);
       setLoading(false);
       if (res.redirectLogin) router.push("/login");
-      return;
     }
-
-    if (res.needSignIn) {
-      const supabase = createClient();
-      await supabase.auth.signInWithPassword({
-        email: String(fd.get("email") ?? "").toLowerCase(),
-        password: String(fd.get("password") ?? ""),
-      });
-    }
-    router.push(`/registro-mascota/gracias/${res.petId}`);
-    router.refresh();
   }
 
   const input = "w-full rounded-lg border border-border px-4 py-3 outline-none focus:border-primary";

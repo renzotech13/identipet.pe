@@ -1,32 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useActionState } from "react";
 import Link from "next/link";
 import { PawPrint } from "lucide-react";
-import { createClient } from "@/lib/supabase/client";
+import { login } from "./actions";
 
 export default function LoginPage() {
-  const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-
-  async function onSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-    const supabase = createClient();
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) {
-      setError("Correo o contraseña incorrectos.");
-      setLoading(false);
-      return;
-    }
-    router.push("/panel");
-    router.refresh();
-  }
+  const [state, formAction, pending] = useActionState(login, undefined);
 
   return (
     <div className="grid min-h-screen md:grid-cols-2">
@@ -46,24 +26,24 @@ export default function LoginPage() {
           <h1 className="text-2xl font-extrabold text-secondary">Iniciar sesión</h1>
           <p className="mt-1 text-muted">Accede a tu cuenta IdentiPet.</p>
 
-          {error && (
-            <div className="mt-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>
+          {state?.error && (
+            <div className="mt-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{state.error}</div>
           )}
 
-          <form onSubmit={onSubmit} className="mt-6 space-y-4">
+          <form action={formAction} className="mt-6 space-y-4">
             <div>
               <label className="mb-1 block text-sm font-semibold text-secondary">Correo electrónico</label>
-              <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
+              <input type="email" name="email" required
                 className="w-full rounded-lg border border-border px-4 py-3 outline-none focus:border-primary" />
             </div>
             <div>
               <label className="mb-1 block text-sm font-semibold text-secondary">Contraseña</label>
-              <input type="password" required value={password} onChange={(e) => setPassword(e.target.value)}
+              <input type="password" name="password" required
                 className="w-full rounded-lg border border-border px-4 py-3 outline-none focus:border-primary" />
             </div>
-            <button type="submit" disabled={loading}
+            <button type="submit" disabled={pending}
               className="w-full rounded-lg bg-primary px-4 py-3 font-semibold text-white hover:bg-primary-dark disabled:opacity-60">
-              {loading ? "Ingresando…" : "Ingresar"}
+              {pending ? "Ingresando…" : "Ingresar"}
             </button>
           </form>
 
