@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+/* =========================================================================
+   IdentiPet — Tema y marca (Tailwind v4)
+   ========================================================================= */
+
+:root {
+  /* Marca IdentiPet */
+  --color-primary-50: #eafaf8;
+  --color-primary: #1fb6a6;        /* turquesa */
+  --color-primary-dark: #149185;
+  --color-secondary: #1e2a52;      /* azul profundo */
+  --color-accent: #ff8a5b;         /* coral */
+  --color-accent-dark: #f0703c;
+
+  --background: #ffffff;
+  --foreground: #1f2a37;
+  --surface: #f6f9fb;
+  --border: #e4ebf0;
+  --muted: #6b7a8d;
+  --radius: 0.875rem;
+}
+
+@theme inline {
+  /* Exponer la marca como utilidades Tailwind: bg-primary, text-secondary, etc. */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-border: var(--border);
+  --color-muted: var(--muted);
+  --color-primary: var(--color-primary);
+  --color-primary-50: var(--color-primary-50);
+  --color-primary-dark: var(--color-primary-dark);
+  --color-secondary: var(--color-secondary);
+  --color-accent: var(--color-accent);
+  --color-accent-dark: var(--color-accent-dark);
+
+  --font-sans: var(--font-lato), system-ui, sans-serif;
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 0.25rem);
+  --radius-sm: calc(var(--radius) - 0.5rem);
+}
+
+* {
+  border-color: var(--border);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Animaciones de la insignia holográfica (award-badge) */
+@keyframes overlayAnimation1 {0%{transform:rotate(0deg)}50%{transform:rotate(10deg)}100%{transform:rotate(0deg)}}
+@keyframes overlayAnimation2 {0%{transform:rotate(10deg)}50%{transform:rotate(20deg)}100%{transform:rotate(10deg)}}
+@keyframes overlayAnimation3 {0%{transform:rotate(20deg)}50%{transform:rotate(30deg)}100%{transform:rotate(20deg)}}
+@keyframes overlayAnimation4 {0%{transform:rotate(30deg)}50%{transform:rotate(40deg)}100%{transform:rotate(30deg)}}
+@keyframes overlayAnimation5 {0%{transform:rotate(40deg)}50%{transform:rotate(50deg)}100%{transform:rotate(40deg)}}
+@keyframes overlayAnimation6 {0%{transform:rotate(50deg)}50%{transform:rotate(60deg)}100%{transform:rotate(50deg)}}
+@keyframes overlayAnimation7 {0%{transform:rotate(60deg)}50%{transform:rotate(70deg)}100%{transform:rotate(60deg)}}
+@keyframes overlayAnimation8 {0%{transform:rotate(70deg)}50%{transform:rotate(80deg)}100%{transform:rotate(70deg)}}
+@keyframes overlayAnimation9 {0%{transform:rotate(80deg)}50%{transform:rotate(90deg)}100%{transform:rotate(80deg)}}
+@keyframes overlayAnimation10 {0%{transform:rotate(90deg)}50%{transform:rotate(100deg)}100%{transform:rotate(90deg)}}
