@@ -1,11 +1,30 @@
 import Link from "next/link";
-import { Play, User } from "lucide-react";
+import {
+  PawPrint,
+  Play,
+  User,
+  MapPin,
+  FileText,
+  ShieldAlert,
+  CircleDollarSign,
+  BadgePercent,
+  Cpu,
+  IdCard,
+  HeartPulse,
+  BellRing,
+  Gift,
+  Stethoscope,
+  Heart,
+  Users,
+  Star,
+  type LucideIcon,
+} from "lucide-react";
 
 export const metadata = {
   title: "IdentiPet — Identidad para toda la vida",
 };
 
-/* Placeholder de imagen para reemplazar luego */
+/* Placeholder SOLO para imágenes reales (fotos, mockups, logos) a reemplazar luego */
 function Ph({ label, className = "" }: { label: string; className?: string }) {
   return (
     <div
@@ -18,29 +37,29 @@ function Ph({ label, className = "" }: { label: string; className?: string }) {
 
 const navItems = ["Inicio", "Beneficios", "Servicios", "Marketplace", "Veterinarias", "Blog", "Contacto"];
 
-const problemas = [
-  ["Se puede perder", "Si se pierde, es difícil que regrese a casa."],
-  ["Historial en papel", "Perder o tener desordenada la información médica."],
-  ["Falta de protección", "No tener identificación dificulta su recuperación."],
-  ["Gastos inesperados", "Emergencias sin historial pueden costar más."],
-  ["Pocos beneficios", "No acceder a descuentos ni promociones."],
+const problemas: [LucideIcon, string, string][] = [
+  [MapPin, "Se puede perder", "Si se pierde, es difícil que regrese a casa."],
+  [FileText, "Historial en papel", "Perder o tener desordenada la información médica."],
+  [ShieldAlert, "Falta de protección", "No tener identificación dificulta su recuperación."],
+  [CircleDollarSign, "Gastos inesperados", "Emergencias sin historial pueden costar más."],
+  [BadgePercent, "Pocos beneficios", "No acceder a descuentos ni promociones."],
 ];
 
-const soluciones = [
-  ["Microchip", "Identificación única y permanente."],
-  ["Identidad Digital", "Carnet digital con código QR único."],
-  ["Historial Médico", "Toda su información médica organizada."],
-  ["Alerta de Pérdida", "Comparte su perfil y encuéntralo más rápido."],
-  ["Beneficios Exclusivos", "Descuentos en marcas y servicios aliados."],
-  ["Servicios para ti", "Veterinarias, emergencias, paseadores y más."],
+const soluciones: [LucideIcon, string, string][] = [
+  [Cpu, "Microchip", "Identificación única y permanente."],
+  [IdCard, "Identidad Digital", "Carnet digital con código QR único."],
+  [HeartPulse, "Historial Médico", "Toda su información médica organizada."],
+  [BellRing, "Alerta de Pérdida", "Comparte su perfil y encuéntralo más rápido."],
+  [Gift, "Beneficios Exclusivos", "Descuentos en marcas y servicios aliados."],
+  [Stethoscope, "Servicios para ti", "Veterinarias, emergencias, paseadores y más."],
 ];
 
-const stats = [
-  ["+25K", "Mascotas registradas"],
-  ["+8K", "Familias felices"],
-  ["+300", "Veterinarias aliadas"],
-  ["+120", "Ciudades en Perú"],
-  ["4.9/5", "Valoración de usuarios"],
+const stats: [LucideIcon, string, string][] = [
+  [PawPrint, "+25K", "Mascotas registradas"],
+  [Users, "+8K", "Familias felices"],
+  [Stethoscope, "+300", "Veterinarias aliadas"],
+  [MapPin, "+120", "Ciudades en Perú"],
+  [Star, "4.9/5", "Valoración de usuarios"],
 ];
 
 const marcas = ["Royal Canin", "Purina", "PetShop", "Zoetis", "Brit", "+ muchas más"];
@@ -53,7 +72,9 @@ export default function Home() {
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-6 px-5">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3">
-            <Ph label="logo" className="h-11 w-11 shrink-0 rounded-xl !bg-primary/15 !text-primary-dark" />
+            <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-primary text-white">
+              <PawPrint className="h-6 w-6" />
+            </span>
             <span className="leading-none">
               <span className="block text-2xl font-extrabold text-secondary">
                 Identi<span className="text-primary">Pet</span>
@@ -85,7 +106,7 @@ export default function Home() {
               href="/registro-mascota"
               className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary-dark"
             >
-              <Ph label="" className="h-4 w-4 rounded !bg-white/30" /> Registrar mi mascota
+              <PawPrint className="h-4 w-4" /> Registrar mi mascota
             </Link>
           </div>
         </div>
@@ -97,7 +118,8 @@ export default function Home() {
           {/* Izquierda */}
           <div>
             <h1 className="text-4xl font-extrabold leading-[1.1] tracking-tight text-secondary sm:text-5xl">
-              Tu mascota merece una identidad para <span className="text-primary">toda la vida</span> ♡
+              Tu mascota merece una identidad para <span className="text-primary">toda la vida</span>{" "}
+              <Heart className="inline h-9 w-9 fill-primary text-primary" />
             </h1>
             <p className="mt-5 max-w-md text-lg text-muted">
               La plataforma completa que protege su identidad con microchip, guarda su historial médico y te conecta con todo lo que necesitas para su bienestar.
@@ -107,7 +129,7 @@ export default function Home() {
                 href="/registro-mascota"
                 className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-semibold text-white hover:bg-primary-dark"
               >
-                <Ph label="" className="h-4 w-4 rounded-full !bg-white/30" /> Registrar mi mascota ahora
+                <PawPrint className="h-5 w-5" /> Registrar mi mascota ahora
               </Link>
               <a
                 href="#"
@@ -141,10 +163,10 @@ export default function Home() {
             <p className="mt-2 text-sm text-white/70">Estos son los problemas más comunes de los Pet Parents</p>
           </div>
           <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-5">
-            {problemas.map(([titulo, texto]) => (
+            {problemas.map(([Icon, titulo, texto]) => (
               <div key={titulo}>
-                <div className="mb-3 grid h-12 w-12 place-items-center rounded-full bg-accent">
-                  <Ph label="" className="h-5 w-5 rounded !bg-white/40" />
+                <div className="mb-3 grid h-12 w-12 place-items-center rounded-full bg-accent text-white">
+                  <Icon className="h-5 w-5" />
                 </div>
                 <h3 className="text-sm font-bold">{titulo}</h3>
                 <p className="mt-1 text-xs text-white/60">{texto}</p>
@@ -164,10 +186,10 @@ export default function Home() {
             <p className="mt-2 text-muted">Todo lo que tu mascota necesita en un solo lugar</p>
           </div>
           <div className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 lg:col-span-9 lg:grid-cols-6">
-            {soluciones.map(([titulo, texto]) => (
+            {soluciones.map(([Icon, titulo, texto]) => (
               <div key={titulo}>
-                <div className="mb-3 grid h-12 w-12 place-items-center rounded-full bg-primary-50">
-                  <Ph label="" className="h-5 w-5 rounded !bg-primary/30" />
+                <div className="mb-3 grid h-12 w-12 place-items-center rounded-full bg-primary-50 text-primary-dark">
+                  <Icon className="h-5 w-5" />
                 </div>
                 <h3 className="text-sm font-bold text-secondary">{titulo}</h3>
                 <p className="mt-1 text-xs text-muted">{texto}</p>
@@ -182,8 +204,8 @@ export default function Home() {
         <div className="mx-auto grid max-w-7xl gap-6 px-5 lg:grid-cols-3">
           {/* Card 1 - verde claro */}
           <div className="flex flex-col rounded-3xl bg-[#e9f7ec] p-7">
-            <h3 className="text-xl font-extrabold text-secondary">
-              <span className="text-primary-dark">♥</span> Protege su vida
+            <h3 className="flex items-center gap-2 text-xl font-extrabold text-secondary">
+              <Heart className="h-5 w-5 fill-primary text-primary" /> Protege su vida
             </h3>
             <p className="mt-2 text-sm text-muted">
               Con microchip y perfil digital aumentas <strong>10 veces</strong> las posibilidades de recuperarlo si se pierde.
@@ -227,10 +249,10 @@ export default function Home() {
       {/* ============ CINTA DE ESTADÍSTICAS (verde oscuro) ============ */}
       <section className="bg-[#14431f] py-10 text-white">
         <div className="mx-auto grid max-w-7xl grid-cols-2 gap-8 px-5 sm:grid-cols-3 lg:grid-cols-5">
-          {stats.map(([cifra, label]) => (
+          {stats.map(([Icon, cifra, label]) => (
             <div key={label} className="flex items-center gap-3">
-              <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-white/10">
-                <Ph label="" className="h-5 w-5 rounded !bg-white/30" />
+              <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-white/10 text-white">
+                <Icon className="h-5 w-5" />
               </div>
               <div>
                 <div className="text-2xl font-extrabold leading-none">{cifra}</div>
