@@ -6,12 +6,13 @@
 
 :root {
   /* Marca IdentiPet */
-  --color-primary-50: #eafaf8;
-  --color-primary: #1fb6a6;        /* turquesa */
-  --color-primary-dark: #149185;
-  --color-secondary: #1e2a52;      /* azul profundo */
-  --color-accent: #ff8a5b;         /* coral */
-  --color-accent-dark: #f0703c;
+  --color-primary-50: #e9f8ed;
+  --color-primary: #2db84c;        /* verde */
+  --color-primary-dark: #1f9a3e;
+  --color-secondary: #0f1b3d;      /* navy oscuro */
+  --color-accent: #ef4d63;         /* rojo/coral (alertas) */
+  --color-accent-dark: #d83a50;
+  --color-band: #14431f;           /* verde oscuro (cinta de stats) */
 
   --background: #ffffff;
   --foreground: #1f2a37;
