@@ -28,6 +28,12 @@ export async function submitRegistro(
   const password = str(formData.get("password"));
 
   if (!ownerId) {
+    // Si el formulario venía en modo "logueado" (sin campos de dueño) pero no hay
+    // sesión, es que la sesión expiró: pedir iniciar sesión de nuevo.
+    if (!email) {
+      return { error: "Tu sesión expiró. Vuelve a iniciar sesión e inténtalo de nuevo.", redirectLogin: true };
+    }
+
     const nombre = str(formData.get("nombre"));
     const apellido = str(formData.get("apellido"));
     const celular = str(formData.get("celular"));
