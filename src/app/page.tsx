@@ -3,66 +3,86 @@ import {
   PawPrint,
   Play,
   User,
-  MapPin,
-  FileText,
-  ShieldAlert,
-  CircleDollarSign,
-  BadgePercent,
-  Cpu,
-  IdCard,
+  ShieldCheck,
   HeartPulse,
-  BellRing,
   Gift,
+  ShoppingBag,
+  MapPin,
   Stethoscope,
+  Bone,
   Heart,
-  Users,
+  Siren,
+  Footprints,
+  MoreHorizontal,
   Star,
+  Building2,
+  ClipboardList,
+  BadgePercent,
+  ArrowRight,
+  ChevronRight,
   type LucideIcon,
 } from "lucide-react";
 
-export const metadata = {
-  title: "IdentiPet — Identidad para toda la vida",
-};
+export const metadata = { title: "IdentiPet — Identidad para toda la vida" };
 
-/* Placeholder SOLO para imágenes reales (fotos, mockups, logos) a reemplazar luego */
+/* Placeholder de imagen (foto / mockup / logo / avatar) a reemplazar luego */
 function Ph({ label, className = "" }: { label: string; className?: string }) {
   return (
-    <div
-      className={`flex items-center justify-center bg-slate-200/70 text-center text-[11px] font-medium text-slate-400 ${className}`}
-    >
+    <div className={`flex items-center justify-center bg-slate-200/70 text-center text-[11px] font-medium text-slate-400 ${className}`}>
       {label}
     </div>
   );
 }
 
-const navItems = ["Inicio", "Beneficios", "Servicios", "Marketplace", "Veterinarias", "Blog", "Contacto"];
+const navItems = ["Beneficios", "Servicios", "Marketplace", "Veterinarias", "Blog", "Contacto"];
 
-const problemas: [LucideIcon, string, string][] = [
-  [MapPin, "Se puede perder", "Si se pierde, es difícil que regrese a casa."],
-  [FileText, "Historial en papel", "Perder o tener desordenada la información médica."],
-  [ShieldAlert, "Falta de protección", "No tener identificación dificulta su recuperación."],
-  [CircleDollarSign, "Gastos inesperados", "Emergencias sin historial pueden costar más."],
-  [BadgePercent, "Pocos beneficios", "No acceder a descuentos ni promociones."],
+const featureBar: [LucideIcon, string][] = [
+  [ShieldCheck, "Identidad Digital"],
+  [HeartPulse, "Historial Médico"],
+  [Gift, "Beneficios Exclusivos"],
+  [ShoppingBag, "Marketplace de Productos"],
+  [MapPin, "Encuentra Servicios"],
 ];
 
-const soluciones: [LucideIcon, string, string][] = [
-  [Cpu, "Microchip", "Identificación única y permanente."],
-  [IdCard, "Identidad Digital", "Carnet digital con código QR único."],
-  [HeartPulse, "Historial Médico", "Toda su información médica organizada."],
-  [BellRing, "Alerta de Pérdida", "Comparte su perfil y encuéntralo más rápido."],
-  [Gift, "Beneficios Exclusivos", "Descuentos en marcas y servicios aliados."],
-  [Stethoscope, "Servicios para ti", "Veterinarias, emergencias, paseadores y más."],
+const miniFeatures: [LucideIcon, string][] = [
+  [Stethoscope, "Veterinarias"],
+  [HeartPulse, "Historial Médico"],
+  [Bone, "Alimentos"],
+  [Gift, "Beneficios"],
+  [Heart, "Adopciones"],
+  [Siren, "Emergencias"],
+  [Footprints, "Paseadores"],
+  [MoreHorizontal, "Y mucho más"],
+];
+
+const beneficios: [LucideIcon, string, string][] = [
+  [ShieldCheck, "Tu mascota siempre identificada", "Comparte su información en segundos si se pierde."],
+  [ClipboardList, "Historial médico siempre disponible", "Toda su información organizada y segura."],
+  [BadgePercent, "Descuentos exclusivos", "Ahorra en cientos de establecimientos y marcas aliadas."],
 ];
 
 const stats: [LucideIcon, string, string][] = [
   [PawPrint, "+25K", "Mascotas registradas"],
-  [Users, "+8K", "Familias felices"],
-  [Stethoscope, "+300", "Veterinarias aliadas"],
-  [MapPin, "+120", "Ciudades en Perú"],
-  [Star, "4.9/5", "Valoración de usuarios"],
+  [Heart, "+8K", "Familias felices"],
+  [Building2, "+500", "Veterinarias aliadas"],
+  [MapPin, "+120", "Ciudades"],
 ];
 
-const marcas = ["Royal Canin", "Purina", "PetShop", "Zoetis", "Brit", "+ muchas más"];
+const productos = [
+  ["Alimento Premium", "S/ 89.90"],
+  ["Collar GPS", "S/ 129.90"],
+  ["Snacks Naturales", "S/ 25.90"],
+  ["Cama Antiestrés", "S/ 119.90"],
+];
+
+const servicios = ["Veterinarias", "Hoteles", "Peluquerías", "Entrenadores"];
+const marcasBeneficios = ["Purina", "Royal Canin", "Brit", "PetShop", "SuperPet", "Zoetis"];
+const marcasStrip = ["Purina", "Royal Canin", "Brit", "PetShop", "Zoetis", "Petlove", "Mimaskot", "Dog Chow", "Virbac"];
+const testimonios = [
+  ["María y Loki", "IdentiPet me da tranquilidad sabiendo que Loki está siempre protegido."],
+  ["Carlos y Nala", "El historial médico de Nala siempre a la mano. Es súper completo y fácil de usar."],
+  ["Ana y Max", "Los beneficios y descuentos son increíbles, ya hemos ahorrado mucho."],
+];
 
 export default function Home() {
   return (
@@ -70,7 +90,6 @@ export default function Home() {
       {/* ============ HEADER ============ */}
       <header className="sticky top-0 z-50 border-b border-border bg-white">
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-6 px-5">
-          {/* Logo */}
           <Link href="/" className="flex items-center gap-3">
             <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-primary text-white">
               <PawPrint className="h-6 w-6" />
@@ -79,33 +98,21 @@ export default function Home() {
               <span className="block text-2xl font-extrabold text-secondary">
                 Identi<span className="text-primary">Pet</span>
               </span>
-              <span className="mt-0.5 block text-[10px] font-bold tracking-[0.15em] text-muted">
-                IDENTIDAD PARA TODA LA VIDA
-              </span>
+              <span className="mt-0.5 block text-[10px] font-bold tracking-[0.15em] text-muted">IDENTIDAD PARA TODA LA VIDA</span>
             </span>
           </Link>
 
-          {/* Nav centrado */}
-          <nav className="hidden items-center gap-7 lg:flex">
+          <nav className="hidden items-center gap-6 lg:flex">
             {navItems.map((item) => (
-              <a key={item} href="#" className="text-sm font-medium text-secondary hover:text-primary-dark">
-                {item}
-              </a>
+              <a key={item} href="#" className="text-sm font-medium text-secondary hover:text-primary-dark">{item}</a>
             ))}
           </nav>
 
-          {/* Botones */}
           <div className="flex items-center gap-3">
-            <Link
-              href="/login"
-              className="inline-flex items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-semibold text-secondary hover:border-primary"
-            >
+            <Link href="/login" className="inline-flex items-center gap-2 rounded-xl border border-border px-4 py-2.5 text-sm font-semibold text-secondary hover:border-primary">
               <User className="h-4 w-4" /> Iniciar sesión
             </Link>
-            <Link
-              href="/registro-mascota"
-              className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary-dark"
-            >
+            <Link href="/registro-mascota" className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary-dark">
               <PawPrint className="h-4 w-4" /> Registrar mi mascota
             </Link>
           </div>
@@ -113,160 +120,243 @@ export default function Home() {
       </header>
 
       {/* ============ HERO ============ */}
-      <section className="border-b border-border">
-        <div className="mx-auto grid max-w-7xl items-center gap-10 px-5 py-12 lg:grid-cols-2 lg:py-16">
-          {/* Izquierda */}
+      <section>
+        <div className="mx-auto grid max-w-7xl items-center gap-10 px-5 py-12 lg:grid-cols-2">
           <div>
-            <h1 className="text-4xl font-extrabold leading-[1.1] tracking-tight text-secondary sm:text-5xl">
+            <h1 className="text-5xl font-extrabold leading-[1.05] tracking-tight text-secondary">
               Tu mascota merece una identidad para <span className="text-primary">toda la vida</span>{" "}
-              <Heart className="inline h-9 w-9 fill-primary text-primary" />
+              <Heart className="inline h-10 w-10 fill-primary text-primary" />
             </h1>
             <p className="mt-5 max-w-md text-lg text-muted">
-              La plataforma completa que protege su identidad con microchip, guarda su historial médico y te conecta con todo lo que necesitas para su bienestar.
+              La plataforma que protege su identidad, organiza su historial médico, te conecta con servicios y te da beneficios exclusivos.
             </p>
             <div className="mt-7 flex flex-wrap gap-4">
-              <Link
-                href="/registro-mascota"
-                className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-semibold text-white hover:bg-primary-dark"
-              >
-                <PawPrint className="h-5 w-5" /> Registrar mi mascota ahora
+              <Link href="/registro-mascota" className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-semibold text-white hover:bg-primary-dark">
+                <PawPrint className="h-5 w-5" /> Crear la identidad de mi mascota
               </Link>
-              <a
-                href="#"
-                className="inline-flex items-center gap-2 rounded-xl border border-border px-6 py-3.5 font-semibold text-secondary hover:border-primary"
-              >
-                <span className="grid h-7 w-7 place-items-center rounded-full bg-primary-50 text-primary-dark">
-                  <Play className="h-3.5 w-3.5 fill-current" />
-                </span>
+              <a href="#" className="inline-flex items-center gap-2 rounded-xl border border-border px-6 py-3.5 font-semibold text-secondary hover:border-primary">
+                <span className="grid h-7 w-7 place-items-center rounded-full bg-primary text-white"><Play className="h-3.5 w-3.5 fill-current" /></span>
                 Ver cómo funciona
               </a>
             </div>
-          </div>
-
-          {/* Derecha: composición de imágenes (placeholders) */}
-          <div className="relative min-h-[420px]">
-            <Ph label="imagen: perro (hero)" className="absolute inset-0 rounded-3xl" />
-            <Ph label="microchip" className="absolute -top-2 right-6 h-12 w-40 rounded-full !bg-white shadow-md" />
-            <Ph label="tarjeta: carnet digital" className="absolute bottom-6 left-0 h-40 w-64 rounded-2xl !bg-white shadow-xl" />
-            <Ph label="mockup: celular" className="absolute -right-2 bottom-2 h-72 w-40 rounded-[2rem] !bg-white shadow-xl" />
-          </div>
-        </div>
-      </section>
-
-      {/* ============ PROBLEMAS (navy) ============ */}
-      <section className="bg-secondary py-12 text-white">
-        <div className="mx-auto grid max-w-7xl gap-8 px-5 lg:grid-cols-[1fr_3fr] lg:items-center">
-          <div>
-            <h2 className="text-2xl font-extrabold">
-              Sabemos lo que <span className="text-primary">te preocupa</span>
-            </h2>
-            <p className="mt-2 text-sm text-white/70">Estos son los problemas más comunes de los Pet Parents</p>
-          </div>
-          <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-5">
-            {problemas.map(([Icon, titulo, texto]) => (
-              <div key={titulo}>
-                <div className="mb-3 grid h-12 w-12 place-items-center rounded-full bg-accent text-white">
-                  <Icon className="h-5 w-5" />
-                </div>
-                <h3 className="text-sm font-bold">{titulo}</h3>
-                <p className="mt-1 text-xs text-white/60">{texto}</p>
+            {/* Trust row */}
+            <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
+              <div className="flex items-center gap-2">
+                <Ph label="avatars" className="h-9 w-20 rounded-full" />
+                <div className="text-xs"><div className="font-bold text-secondary">+25K mascotas</div><div className="text-muted">ya registradas</div></div>
               </div>
-            ))}
+              <div className="flex items-center gap-2">
+                <ShieldCheck className="h-7 w-7 text-primary" />
+                <div className="text-xs"><div className="font-bold text-secondary">100% Seguro</div><div className="text-muted">y confiable</div></div>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="flex text-amber-400">{[...Array(5)].map((_, i) => <Star key={i} className="h-4 w-4 fill-current" />)}</div>
+                <div className="text-xs"><div className="font-bold text-secondary">4.9/5</div><div className="text-muted">Valoración de usuarios</div></div>
+              </div>
+            </div>
+          </div>
+
+          {/* Composición de imágenes */}
+          <div className="relative min-h-[440px]">
+            <Ph label="imagen: persona + perro (hero)" className="absolute inset-0 rounded-3xl" />
+            <Ph label="mockup: celular (app)" className="absolute -right-2 top-6 h-96 w-48 rounded-[2rem] !bg-white shadow-2xl" />
           </div>
         </div>
       </section>
 
-      {/* ============ SOLUCIONES (blanco) ============ */}
+      {/* ============ BARRA DE FEATURES (verde) ============ */}
+      <section className="mx-auto max-w-7xl px-5">
+        <div className="grid grid-cols-2 gap-y-6 rounded-3xl bg-primary px-6 py-7 text-white sm:grid-cols-3 lg:grid-cols-5 lg:divide-x lg:divide-white/20">
+          {featureBar.map(([Icon, label]) => (
+            <div key={label} className="flex items-center gap-3 px-4">
+              <Icon className="h-7 w-7 shrink-0" />
+              <span className="text-sm font-semibold leading-tight">{label}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ============ TODO LO QUE NECESITA ============ */}
       <section className="py-16">
-        <div className="mx-auto grid max-w-7xl gap-10 px-5 lg:grid-cols-12">
-          <div className="lg:col-span-3">
-            <h2 className="text-3xl font-extrabold text-secondary">
-              IdentiPet es la <span className="text-primary">solución completa</span>
+        <div className="mx-auto grid max-w-7xl gap-10 px-5 lg:grid-cols-3">
+          {/* Izquierda: título + mini features */}
+          <div>
+            <h2 className="text-3xl font-extrabold leading-tight text-secondary">
+              Todo lo que tu mascota necesita <span className="text-primary">en un solo lugar</span>
             </h2>
-            <p className="mt-2 text-muted">Todo lo que tu mascota necesita en un solo lugar</p>
-          </div>
-          <div className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 lg:col-span-9 lg:grid-cols-6">
-            {soluciones.map(([Icon, titulo, texto]) => (
-              <div key={titulo}>
-                <div className="mb-3 grid h-12 w-12 place-items-center rounded-full bg-primary-50 text-primary-dark">
-                  <Icon className="h-5 w-5" />
+            <div className="mt-7 grid grid-cols-4 gap-x-4 gap-y-6">
+              {miniFeatures.map(([Icon, label]) => (
+                <div key={label} className="text-center">
+                  <div className="mx-auto grid h-14 w-14 place-items-center rounded-full border border-border bg-white text-primary-dark shadow-sm">
+                    <Icon className="h-6 w-6" />
+                  </div>
+                  <div className="mt-2 text-[11px] font-semibold text-secondary">{label}</div>
                 </div>
-                <h3 className="text-sm font-bold text-secondary">{titulo}</h3>
-                <p className="mt-1 text-xs text-muted">{texto}</p>
-              </div>
-            ))}
+              ))}
+            </div>
+          </div>
+
+          {/* Centro: mockups */}
+          <div className="flex items-end justify-center gap-2">
+            <Ph label="mockup: Historial Médico" className="h-80 w-44 rounded-[1.75rem] !bg-white shadow-xl" />
+            <Ph label="mockup: Beneficios (Hasta 30%)" className="h-72 w-44 rounded-[1.75rem] !bg-white shadow-xl" />
+          </div>
+
+          {/* Derecha: beneficios */}
+          <div>
+            <h2 className="text-3xl font-extrabold leading-tight text-secondary">
+              Protección, salud y beneficios para <span className="text-primary">una vida increíble</span>
+            </h2>
+            <div className="mt-6 space-y-5">
+              {beneficios.map(([Icon, titulo, texto]) => (
+                <div key={titulo} className="flex gap-3">
+                  <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-primary-50 text-primary-dark">
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-secondary">{titulo}</h3>
+                    <p className="text-sm text-muted">{texto}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <a href="#" className="mt-6 inline-flex items-center gap-1 font-semibold text-primary-dark hover:underline">
+              Conoce todos los beneficios <ArrowRight className="h-4 w-4" />
+            </a>
           </div>
         </div>
       </section>
 
-      {/* ============ TARJETAS DESTACADAS ============ */}
-      <section className="pb-16">
+      {/* ============ CINTA DE ESTADÍSTICAS (verde oscuro) ============ */}
+      <section className="mx-auto max-w-7xl px-5">
+        <div className="relative overflow-hidden rounded-3xl bg-[#14431f] px-8 py-9 text-white">
+          <div className="grid grid-cols-2 gap-8 sm:grid-cols-4 lg:pr-40">
+            {stats.map(([Icon, cifra, label]) => (
+              <div key={label} className="flex items-center gap-3">
+                <Icon className="h-9 w-9 shrink-0 text-primary" />
+                <div>
+                  <div className="text-3xl font-black leading-none">{cifra}</div>
+                  <div className="mt-1 text-xs text-white/70">{label}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <Ph label="imagen: perro" className="absolute bottom-0 right-4 hidden h-40 w-40 rounded-2xl !bg-white/10 !text-white/50 lg:flex" />
+        </div>
+      </section>
+
+      {/* ============ 3 TARJETAS (Marketplace / Servicios / Beneficios) ============ */}
+      <section className="py-16">
         <div className="mx-auto grid max-w-7xl gap-6 px-5 lg:grid-cols-3">
-          {/* Card 1 - verde claro */}
-          <div className="flex flex-col rounded-3xl bg-[#e9f7ec] p-7">
-            <h3 className="flex items-center gap-2 text-xl font-extrabold text-secondary">
-              <Heart className="h-5 w-5 fill-primary text-primary" /> Protege su vida
-            </h3>
-            <p className="mt-2 text-sm text-muted">
-              Con microchip y perfil digital aumentas <strong>10 veces</strong> las posibilidades de recuperarlo si se pierde.
-            </p>
-            <Link href="/registro-mascota" className="mt-4 inline-flex w-fit rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-dark">
-              Conoce más
-            </Link>
-            <Ph label="imagen: perro + microchip" className="mt-5 h-40 rounded-2xl" />
+          {/* Marketplace */}
+          <div className="rounded-3xl border border-border bg-white p-6 shadow-sm">
+            <CardHead title="Marketplace para tu mascota" />
+            <div className="mt-5 grid grid-cols-2 gap-4">
+              {productos.map(([nombre, precio]) => (
+                <div key={nombre}>
+                  <Ph label="producto" className="h-24 w-full rounded-xl" />
+                  <div className="mt-2 text-xs font-semibold text-secondary">{nombre}</div>
+                  <div className="text-xs font-bold text-primary-dark">{precio}</div>
+                </div>
+              ))}
+            </div>
           </div>
 
-          {/* Card 2 - celeste claro */}
-          <div className="flex flex-col rounded-3xl bg-[#e7f1fb] p-7">
-            <h3 className="text-xl font-extrabold text-secondary">Salud siempre al día</h3>
-            <p className="mt-2 text-sm text-muted">
-              Ten a la mano su historial médico, vacunas, desparasitaciones, alergias y más.
-            </p>
-            <Link href="/login" className="mt-4 inline-flex w-fit rounded-lg border border-[#bcd8f2] bg-white px-5 py-2.5 text-sm font-semibold text-secondary hover:border-primary">
-              Ver historial
-            </Link>
-            <Ph label="mockup: historial médico" className="mt-5 h-40 rounded-2xl" />
+          {/* Servicios */}
+          <div className="rounded-3xl border border-border bg-white p-6 shadow-sm">
+            <CardHead title="Encuentra servicios cerca de ti" />
+            <div className="mt-5 grid grid-cols-2 gap-5">
+              {servicios.map((s) => (
+                <div key={s} className="text-center">
+                  <Ph label="foto" className="mx-auto h-20 w-20 rounded-full" />
+                  <div className="mt-2 text-xs font-semibold text-secondary">{s}</div>
+                </div>
+              ))}
+            </div>
           </div>
 
-          {/* Card 3 - beige claro */}
-          <div className="flex flex-col rounded-3xl bg-[#f7f1e3] p-7">
-            <h3 className="text-xl font-extrabold text-secondary">Ahorra más</h3>
-            <p className="mt-2 text-sm text-muted">
-              Accede a descuentos exclusivos en alimentos, veterinarias, medicinas y mucho más.
-            </p>
-            <Link href="#" className="mt-4 inline-flex w-fit rounded-lg border border-[#e3d6b8] bg-white px-5 py-2.5 text-sm font-semibold text-secondary hover:border-primary">
-              Ver beneficios
-            </Link>
-            <div className="mt-5 grid grid-cols-2 gap-3">
-              {marcas.map((m) => (
-                <Ph key={m} label={m} className="h-14 rounded-xl !bg-white !text-slate-500 shadow-sm" />
+          {/* Beneficios */}
+          <div className="rounded-3xl border border-border bg-white p-6 shadow-sm">
+            <CardHead title="Beneficios exclusivos" />
+            <div className="mt-5 grid grid-cols-3 gap-3">
+              {marcasBeneficios.map((m) => (
+                <Ph key={m} label={m} className="h-16 rounded-xl !bg-slate-50 !text-slate-500 shadow-sm" />
               ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* ============ CINTA DE ESTADÍSTICAS (verde oscuro) ============ */}
-      <section className="bg-[#14431f] py-10 text-white">
-        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-8 px-5 sm:grid-cols-3 lg:grid-cols-5">
-          {stats.map(([Icon, cifra, label]) => (
-            <div key={label} className="flex items-center gap-3">
-              <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-white/10 text-white">
-                <Icon className="h-5 w-5" />
-              </div>
-              <div>
-                <div className="text-2xl font-extrabold leading-none">{cifra}</div>
-                <div className="mt-1 text-xs text-white/70">{label}</div>
-              </div>
+      {/* ============ STRIP DE MARCAS ============ */}
+      <section className="border-y border-border bg-surface py-10">
+        <div className="mx-auto max-w-7xl px-5">
+          <p className="mb-6 text-center text-sm font-semibold text-muted">Empresas y marcas que confían en nosotros</p>
+          <div className="flex items-center gap-5">
+            <div className="grid flex-1 grid-cols-3 gap-4 sm:grid-cols-5 lg:grid-cols-9">
+              {marcasStrip.map((m) => (
+                <Ph key={m} label={m} className="h-12 rounded-lg !bg-white !text-slate-500 shadow-sm" />
+              ))}
             </div>
-          ))}
+            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-border text-muted"><ChevronRight className="h-5 w-5" /></span>
+          </div>
+        </div>
+      </section>
+
+      {/* ============ TESTIMONIOS ============ */}
+      <section className="py-16">
+        <div className="mx-auto max-w-7xl px-5">
+          <div className="mb-8 flex items-center justify-between">
+            <h2 className="text-2xl font-extrabold text-secondary">Lo que dicen nuestros Pet Parents</h2>
+            <a href="#" className="inline-flex items-center gap-1 text-sm font-semibold text-primary-dark">Ver más <ArrowRight className="h-4 w-4" /></a>
+          </div>
+          <div className="grid gap-6 md:grid-cols-3">
+            {testimonios.map(([nombre, quote]) => (
+              <div key={nombre} className="rounded-2xl border border-border bg-white p-6 shadow-sm">
+                <div className="flex items-center gap-3">
+                  <Ph label="foto" className="h-12 w-12 rounded-full" />
+                  <div>
+                    <div className="font-bold text-secondary">{nombre}</div>
+                    <div className="flex text-amber-400">{[...Array(5)].map((_, i) => <Star key={i} className="h-3.5 w-3.5 fill-current" />)}</div>
+                  </div>
+                </div>
+                <p className="mt-4 text-sm text-muted">&ldquo;{quote}&rdquo;</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ============ CTA DESCARGA APP (verde) ============ */}
+      <section className="bg-primary">
+        <div className="mx-auto grid max-w-7xl items-center gap-8 px-5 py-12 lg:grid-cols-[1fr_2fr_1fr]">
+          <Ph label="imagen: perro" className="hidden h-40 rounded-2xl !bg-white/15 !text-white/60 lg:flex" />
+          <div className="text-center text-white">
+            <h2 className="text-3xl font-extrabold">
+              Descarga la app de <span className="block text-4xl">IdentiPet</span>
+            </h2>
+            <p className="mt-2 text-white/85">Muy pronto podrás llevar todo IdentiPet en tu bolsillo.</p>
+            <div className="mt-5 flex flex-wrap justify-center gap-3">
+              <Ph label="Google Play" className="h-12 w-40 rounded-xl !bg-secondary !text-white/80" />
+              <Ph label="App Store" className="h-12 w-40 rounded-xl !bg-secondary !text-white/80" />
+            </div>
+          </div>
+          <Ph label="mockup: celular" className="mx-auto hidden h-56 w-32 rounded-[1.75rem] !bg-white/15 !text-white/60 lg:flex" />
         </div>
       </section>
 
       {/* ============ FOOTER ============ */}
-      <footer className="mt-auto bg-secondary py-10 text-center text-sm text-slate-300">
+      <footer className="bg-secondary py-10 text-center text-sm text-slate-300">
         © {new Date().getFullYear()} IdentiPet · identipet.pe · Lima, Perú
       </footer>
+    </div>
+  );
+}
+
+function CardHead({ title }: { title: string }) {
+  return (
+    <div className="flex items-center justify-between">
+      <h3 className="font-extrabold text-secondary">{title}</h3>
+      <a href="#" className="inline-flex items-center gap-1 text-xs font-semibold text-primary-dark">Ver más <ArrowRight className="h-3.5 w-3.5" /></a>
     </div>
   );
 }
