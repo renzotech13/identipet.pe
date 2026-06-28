@@ -3,7 +3,13 @@ import { NextResponse, type NextRequest } from "next/server";
 
 type CookieToSet = { name: string; value: string; options?: CookieOptions };
 
-/** Refresca la sesión de Supabase en cada petición (cookies). */
+/** Rutas que requieren sesión iniciada. */
+const PROTECTED = ["/panel", "/registro-mascota/gracias"];
+
+/**
+ * Refresca la sesión de Supabase (escribe las cookies renovadas) y protege rutas.
+ * IMPORTANTE: no agregar lógica entre createServerClient y getUser().
+ */
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request });
 
@@ -26,6 +32,18 @@ export async function updateSession(request: NextRequest) {
     }
   );
 
-  await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const path = request.nextUrl.pathname;
+  const needsAuth = PROTECTED.some((p) => path.startsWith(p));
+
+  if (!user && needsAuth) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/login";
+    return NextResponse.redirect(url);
+  }
+
   return response;
 }
