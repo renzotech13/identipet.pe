@@ -42,9 +42,16 @@ export default async function PanelPage() {
             <h1 className="mt-1 text-3xl font-extrabold text-secondary">Hola, {profile?.nombre ?? ""}</h1>
             <p className="text-muted">Rol: {profile?.role ?? "propietario"}</p>
           </div>
-          <Link href="/registro-mascota" className="rounded-lg bg-primary px-5 py-3 font-semibold text-white hover:bg-primary-dark">
-            Registrar mascota
-          </Link>
+          <div className="flex flex-wrap gap-3">
+            {profile?.role === "administrador" && (
+              <Link href="/admin/editor" className="rounded-lg border border-border px-5 py-3 font-semibold text-secondary hover:border-primary">
+                Editor del sitio
+              </Link>
+            )}
+            <Link href="/registro-mascota" className="rounded-lg bg-primary px-5 py-3 font-semibold text-white hover:bg-primary-dark">
+              Registrar mascota
+            </Link>
+          </div>
         </div>
 
         {list.length === 0 ? (

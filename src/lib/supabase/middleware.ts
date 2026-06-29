@@ -4,7 +4,7 @@ import { NextResponse, type NextRequest } from "next/server";
 type CookieToSet = { name: string; value: string; options?: CookieOptions };
 
 /** Rutas que requieren sesión iniciada. */
-const PROTECTED = ["/panel", "/registro-mascota/gracias"];
+const PROTECTED = ["/panel", "/admin", "/registro-mascota/gracias"];
 
 /**
  * Refresca la sesión de Supabase (escribe las cookies renovadas) y protege rutas.
