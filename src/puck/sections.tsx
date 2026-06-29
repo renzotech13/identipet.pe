@@ -8,7 +8,7 @@ import {
   Building2, ClipboardList, BadgePercent, ArrowRight, ChevronRight, type LucideIcon,
 } from "lucide-react";
 import { ImageField } from "./ImageField";
-import { ml } from "./text";
+import { ml, textSizeMap, textSizeOptions } from "./text";
 
 /* Campo de imagen reutilizable para usar dentro de arrays/objetos */
 const imageField = {
@@ -136,14 +136,21 @@ export const sectionComponents: Config["components"] = {
   /* ====== BARRA VERDE ====== */
   FeatureBarBlock: {
     label: "Barra de features (verde)",
-    fields: { items: { type: "array", label: "Items", arrayFields: { label: { type: "text" } } } },
-    defaultProps: { items: [{ label: "Identidad Digital" }, { label: "Historial Médico" }, { label: "Beneficios Exclusivos" }, { label: "Marketplace de Productos" }, { label: "Encuentra Servicios" }] },
-    render: ({ items }) => (
+    fields: {
+      items: { type: "array", label: "Items", arrayFields: { label: { type: "text" } } },
+      iconSize: { type: "number", label: "Tamaño íconos (px)", min: 14, max: 64 },
+      textSize: { type: "select", label: "Tamaño texto", options: textSizeOptions },
+    },
+    defaultProps: {
+      items: [{ label: "Identidad Digital" }, { label: "Historial Médico" }, { label: "Beneficios Exclusivos" }, { label: "Marketplace de Productos" }, { label: "Encuentra Servicios" }],
+      iconSize: 28, textSize: "sm",
+    },
+    render: ({ items, iconSize, textSize }) => (
       <section className="relative z-10 mx-auto max-w-7xl px-5">
         <div className="grid grid-cols-2 gap-y-6 rounded-3xl bg-primary px-6 py-7 text-white sm:grid-cols-3 lg:grid-cols-5 lg:divide-x lg:divide-white/20">
           {(items ?? []).map((it: { label: string }, i: number) => {
             const Icon = featureIcons[i % featureIcons.length];
-            return <div key={i} className="flex items-center gap-3 px-4"><Icon className="h-7 w-7 shrink-0" /><span className="text-sm font-semibold leading-tight">{ml(it.label)}</span></div>;
+            return <div key={i} className="flex items-center gap-3 px-4"><Icon style={{ width: `${iconSize}px`, height: `${iconSize}px` }} className="shrink-0" /><span className={`font-semibold leading-tight ${textSizeMap[textSize] ?? "text-sm"}`}>{ml(it.label)}</span></div>;
           })}
         </div>
       </section>
@@ -157,6 +164,7 @@ export const sectionComponents: Config["components"] = {
       leftTitle: { type: "textarea", label: "Título izquierda (Enter = salto)" },
       leftHighlight: { type: "text", label: "Resaltado izquierda" },
       miniItems: { type: "array", label: "Mini features", arrayFields: { label: { type: "text" } } },
+      miniIconSize: { type: "number", label: "Tamaño íconos mini (px)", min: 14, max: 48 },
       img1: { ...imageField, label: "Mockup 1" },
       img2: { ...imageField, label: "Mockup 2" },
       rightTitle: { type: "textarea", label: "Título derecha (Enter = salto)" },
@@ -167,6 +175,7 @@ export const sectionComponents: Config["components"] = {
     defaultProps: {
       leftTitle: "Todo lo que tu mascota necesita", leftHighlight: "en un solo lugar",
       miniItems: [{ label: "Veterinarias" }, { label: "Historial Médico" }, { label: "Alimentos" }, { label: "Beneficios" }, { label: "Adopciones" }, { label: "Emergencias" }, { label: "Paseadores" }, { label: "Y mucho más" }],
+      miniIconSize: 24,
       rightTitle: "Protección, salud y beneficios para", rightHighlight: "una vida increíble",
       benefits: [
         { title: "Tu mascota siempre identificada", text: "Comparte su información en segundos si se pierde." },
@@ -175,7 +184,7 @@ export const sectionComponents: Config["components"] = {
       ],
       linkLabel: "Conoce todos los beneficios",
     },
-    render: ({ leftTitle, leftHighlight, miniItems, img1, img2, rightTitle, rightHighlight, benefits, linkLabel }) => (
+    render: ({ leftTitle, leftHighlight, miniItems, miniIconSize, img1, img2, rightTitle, rightHighlight, benefits, linkLabel }) => (
       <section className="py-16">
         <div className="mx-auto grid max-w-7xl gap-10 px-5 lg:grid-cols-3">
           <div>
@@ -183,7 +192,7 @@ export const sectionComponents: Config["components"] = {
             <div className="mt-7 grid grid-cols-4 gap-x-4 gap-y-6">
               {(miniItems ?? []).map((m: { label: string }, i: number) => {
                 const Icon = miniIcons[i % miniIcons.length];
-                return <div key={i} className="text-center"><div className="mx-auto grid h-14 w-14 place-items-center rounded-full border border-border bg-white text-primary-dark shadow-sm"><Icon className="h-6 w-6" /></div><div className="mt-2 text-[11px] font-semibold text-secondary">{ml(m.label)}</div></div>;
+                return <div key={i} className="text-center"><div className="mx-auto grid h-14 w-14 place-items-center rounded-full border border-border bg-white text-primary-dark shadow-sm"><Icon style={{ width: `${miniIconSize}px`, height: `${miniIconSize}px` }} /></div><div className="mt-2 text-[11px] font-semibold text-secondary">{ml(m.label)}</div></div>;
               })}
             </div>
           </div>
@@ -209,15 +218,20 @@ export const sectionComponents: Config["components"] = {
   /* ====== CINTA DE STATS ====== */
   StatsRibbonBlock: {
     label: "Cinta de estadísticas",
-    fields: { items: { type: "array", label: "Items", arrayFields: { value: { type: "text" }, label: { type: "text" } } }, image: { ...imageField, label: "Imagen" } },
-    defaultProps: { items: [{ value: "+25K", label: "Mascotas registradas" }, { value: "+8K", label: "Familias felices" }, { value: "+500", label: "Veterinarias aliadas" }, { value: "+120", label: "Ciudades" }] },
-    render: ({ items, image }) => (
+    fields: {
+      items: { type: "array", label: "Items", arrayFields: { value: { type: "text" }, label: { type: "text" } } },
+      iconSize: { type: "number", label: "Tamaño íconos (px)", min: 16, max: 80 },
+      valueSize: { type: "select", label: "Tamaño cifras", options: textSizeOptions },
+      image: { ...imageField, label: "Imagen" },
+    },
+    defaultProps: { items: [{ value: "+25K", label: "Mascotas registradas" }, { value: "+8K", label: "Familias felices" }, { value: "+500", label: "Veterinarias aliadas" }, { value: "+120", label: "Ciudades" }], iconSize: 36, valueSize: "3xl" },
+    render: ({ items, iconSize, valueSize, image }) => (
       <section className="mx-auto max-w-7xl px-5">
         <div className="relative overflow-hidden rounded-3xl bg-[#14431f] px-8 py-9 text-white">
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-4 lg:pr-40">
             {(items ?? []).map((s: { value: string; label: string }, i: number) => {
               const Icon = statIcons[i % statIcons.length];
-              return <div key={i} className="flex items-center gap-3"><Icon className="h-9 w-9 shrink-0 text-primary" /><div><div className="text-3xl font-black leading-none">{ml(s.value)}</div><div className="mt-1 text-xs text-white/70">{ml(s.label)}</div></div></div>;
+              return <div key={i} className="flex items-center gap-3"><Icon style={{ width: `${iconSize}px`, height: `${iconSize}px` }} className="shrink-0 text-primary" /><div><div className={`font-black leading-none ${textSizeMap[valueSize] ?? "text-3xl"}`}>{ml(s.value)}</div><div className="mt-1 text-xs text-white/70">{ml(s.label)}</div></div></div>;
             })}
           </div>
           {image && <Img src={image} className="absolute bottom-0 right-4 hidden h-40 w-40 rounded-2xl lg:block" />}

@@ -2,10 +2,27 @@
 
 import type { ReactNode } from "react";
 import type { Config } from "@measured/puck";
-import { Star } from "lucide-react";
+import {
+  Star, PawPrint, Heart, ShieldCheck, Gift, MapPin, Stethoscope, Bell, Bone,
+  Footprints, Siren, ShoppingBag, HeartPulse, Cpu, IdCard, BadgePercent,
+  Building2, Users, Phone, Mail, Check, Camera, Award, Sparkles, type LucideIcon,
+} from "lucide-react";
 import { ImageField } from "./ImageField";
 import { sectionComponents } from "./sections";
-import { ml } from "./text";
+import { ml, textSizeMap, textSizeOptions } from "./text";
+
+/* Íconos disponibles para el bloque "Icono" */
+const iconMap: Record<string, LucideIcon> = {
+  Huella: PawPrint, Corazón: Heart, Estrella: Star, Escudo: ShieldCheck, Regalo: Gift,
+  Ubicación: MapPin, Veterinaria: Stethoscope, Campana: Bell, Hueso: Bone, Huellas: Footprints,
+  Alerta: Siren, Bolsa: ShoppingBag, Pulso: HeartPulse, Chip: Cpu, Carnet: IdCard,
+  Descuento: BadgePercent, Edificio: Building2, Usuarios: Users, Teléfono: Phone, Correo: Mail,
+  Check: Check, Cámara: Camera, Premio: Award, Brillo: Sparkles,
+};
+const iconColorMap: Record<string, string> = {
+  primary: "text-primary", secondary: "text-secondary", accent: "text-accent",
+  muted: "text-muted", white: "text-white", amber: "text-amber-400",
+};
 
 /* ---- mapas de clases ---- */
 const bgMap: Record<string, string> = {
@@ -35,7 +52,7 @@ export const config: Config = {
   },
   categories: {
     Secciones: { components: ["SiteHeaderBlock", "HeroBlock", "FeatureBarBlock", "NeedsBlock", "StatsRibbonBlock", "CardsRowBlock", "BrandStripBlock", "TestimonialsBlock", "AppCtaBlock"] },
-    Básicos: { components: ["Section", "Columns", "Heading", "Text", "Button", "Image", "Rating", "Stats", "Spacer"] },
+    Básicos: { components: ["Section", "Columns", "Heading", "Text", "Button", "Image", "Icon", "Rating", "Stats", "Spacer"] },
   },
   components: {
     ...sectionComponents,
@@ -90,14 +107,16 @@ export const config: Config = {
       label: "Título",
       fields: {
         text: { type: "textarea", label: "Texto (Enter = salto de línea)" },
-        level: { type: "select", label: "Nivel", options: [{ label: "H1", value: "h1" }, { label: "H2", value: "h2" }, { label: "H3", value: "h3" }] },
+        size: { type: "select", label: "Tamaño", options: [{ label: "Auto (según nivel)", value: "auto" }, ...textSizeOptions] },
+        level: { type: "select", label: "Nivel (SEO)", options: [{ label: "H1", value: "h1" }, { label: "H2", value: "h2" }, { label: "H3", value: "h3" }] },
         align: { type: "select", label: "Alineación", options: [{ label: "Izquierda", value: "left" }, { label: "Centro", value: "center" }, { label: "Derecha", value: "right" }] },
         color: { type: "select", label: "Color", options: [{ label: "Navy", value: "secondary" }, { label: "Verde", value: "primary" }, { label: "Blanco", value: "white" }] },
       },
-      defaultProps: { text: "Título nuevo", level: "h2", align: "left", color: "secondary" },
-      render: ({ text, level, align, color }) => {
-        const size = level === "h1" ? "text-5xl" : level === "h3" ? "text-2xl" : "text-3xl sm:text-4xl";
-        const cls = `whitespace-pre-line font-extrabold tracking-tight ${size} ${alignMap[align]} ${colorMap[color]}`;
+      defaultProps: { text: "Título nuevo", size: "auto", level: "h2", align: "left", color: "secondary" },
+      render: ({ text, size, level, align, color }) => {
+        const auto = level === "h1" ? "text-5xl" : level === "h3" ? "text-2xl" : "text-3xl sm:text-4xl";
+        const sizeCls = size && size !== "auto" ? textSizeMap[size] : auto;
+        const cls = `whitespace-pre-line font-extrabold tracking-tight ${sizeCls} ${alignMap[align]} ${colorMap[color]}`;
         if (level === "h1") return <h1 className={cls}>{ml(text)}</h1>;
         if (level === "h3") return <h3 className={cls}>{ml(text)}</h3>;
         return <h2 className={cls}>{ml(text)}</h2>;
@@ -109,11 +128,30 @@ export const config: Config = {
       label: "Texto",
       fields: {
         text: { type: "textarea", label: "Texto (Enter = salto de línea)" },
+        size: { type: "select", label: "Tamaño", options: textSizeOptions },
+        weight: { type: "select", label: "Grosor", options: [{ label: "Normal", value: "font-normal" }, { label: "Medio", value: "font-medium" }, { label: "Negrita", value: "font-bold" }] },
         align: { type: "select", label: "Alineación", options: [{ label: "Izquierda", value: "left" }, { label: "Centro", value: "center" }, { label: "Derecha", value: "right" }] },
         color: { type: "select", label: "Color", options: [{ label: "Gris", value: "muted" }, { label: "Navy", value: "secondary" }, { label: "Blanco", value: "white" }] },
       },
-      defaultProps: { text: "Escribe aquí tu texto.", align: "left", color: "muted" },
-      render: ({ text, align, color }) => <p className={`whitespace-pre-line text-lg ${alignMap[align]} ${colorMap[color]}`}>{ml(text)}</p>,
+      defaultProps: { text: "Escribe aquí tu texto.", size: "lg", weight: "font-normal", align: "left", color: "muted" },
+      render: ({ text, size, weight, align, color }) => <p className={`whitespace-pre-line ${textSizeMap[size] ?? "text-lg"} ${weight} ${alignMap[align]} ${colorMap[color]}`}>{ml(text)}</p>,
+    },
+
+    /* ====== ICONO ====== */
+    Icon: {
+      label: "Icono",
+      fields: {
+        icon: { type: "select", label: "Icono", options: Object.keys(iconMap).map((k) => ({ label: k, value: k })) },
+        size: { type: "number", label: "Tamaño (px)", min: 12, max: 200 },
+        color: { type: "select", label: "Color", options: [{ label: "Verde", value: "primary" }, { label: "Navy", value: "secondary" }, { label: "Coral", value: "accent" }, { label: "Gris", value: "muted" }, { label: "Blanco", value: "white" }, { label: "Ámbar", value: "amber" }] },
+        align: { type: "select", label: "Alineación", options: [{ label: "Izquierda", value: "left" }, { label: "Centro", value: "center" }, { label: "Derecha", value: "right" }] },
+      },
+      defaultProps: { icon: "Huella", size: 40, color: "primary", align: "left" },
+      render: ({ icon, size, color, align }) => {
+        const Ico = iconMap[icon] ?? PawPrint;
+        const justify = align === "center" ? "justify-center" : align === "right" ? "justify-end" : "justify-start";
+        return <div className={`flex ${justify}`}><Ico style={{ width: `${size}px`, height: `${size}px` }} className={iconColorMap[color] ?? "text-primary"} /></div>;
+      },
     },
 
     /* ====== VALORACIÓN (estrellas) ====== */
@@ -121,18 +159,20 @@ export const config: Config = {
       label: "Valoración (estrellas)",
       fields: {
         stars: { type: "number", label: "Estrellas llenas (1-5)", min: 0, max: 5 },
+        starSize: { type: "number", label: "Tamaño estrellas (px)", min: 10, max: 80 },
         score: { type: "text", label: "Puntaje (ej. 4.9/5)" },
+        scoreSize: { type: "select", label: "Tamaño puntaje", options: textSizeOptions },
         label: { type: "text", label: "Etiqueta" },
         align: { type: "select", label: "Alineación", options: [{ label: "Izquierda", value: "left" }, { label: "Centro", value: "center" }] },
       },
-      defaultProps: { stars: 5, score: "4.9/5", label: "Valoración de usuarios", align: "left" },
-      render: ({ stars, score, label, align }) => (
+      defaultProps: { stars: 5, starSize: 20, score: "4.9/5", scoreSize: "lg", label: "Valoración de usuarios", align: "left" },
+      render: ({ stars, starSize, score, scoreSize, label, align }) => (
         <div className={align === "center" ? "text-center" : "text-left"}>
           <div className={`flex items-center gap-2 ${align === "center" ? "justify-center" : ""}`}>
             <div className="flex text-amber-400">
-              {[...Array(Math.max(0, Math.min(5, Number(stars) || 0)))].map((_, i) => <Star key={i} className="h-5 w-5 fill-current" />)}
+              {[...Array(Math.max(0, Math.min(5, Number(stars) || 0)))].map((_, i) => <Star key={i} style={{ width: `${starSize}px`, height: `${starSize}px` }} className="fill-current" />)}
             </div>
-            {score && <span className="font-extrabold text-secondary">{score}</span>}
+            {score && <span className={`font-extrabold text-secondary ${textSizeMap[scoreSize] ?? "text-lg"}`}>{score}</span>}
           </div>
           {label && <div className="mt-1 text-sm text-muted">{label}</div>}
         </div>
