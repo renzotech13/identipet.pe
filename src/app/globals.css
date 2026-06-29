@@ -14,7 +14,7 @@
   --color-accent-dark: #d83a50;
   --color-band: #14431f;           /* verde oscuro (cinta de stats) */
 
-  --background: #ffffff;
+  --background: #f9fbfb;
   --foreground: #1f2a37;
   --surface: #f6f9fb;
   --border: #e4ebf0;
@@ -53,6 +53,14 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
 }
+
+/* Flotación suave y constante (mockup del hero) */
+@keyframes ipFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-16px); }
+}
+.ip-float { animation: ipFloat 4.5s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .ip-float { animation: none; } }
 
 /* Animaciones de la insignia holográfica (award-badge) */
 @keyframes overlayAnimation1 {0%{transform:rotate(0deg)}50%{transform:rotate(10deg)}100%{transform:rotate(0deg)}}

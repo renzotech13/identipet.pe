@@ -33,9 +33,22 @@ export const metadata = { title: "IdentiPet — Identidad para toda la vida" };
  *   coloca el archivo en  public/img-bg-of.jpg
  *   y úsalo como          <Ph src="/img-bg-of.jpg" label="..." className="..." />
  */
-function Ph({ label, src, alt, className = "" }: { label: string; src?: string; alt?: string; className?: string }) {
+function Ph({
+  label,
+  src,
+  alt,
+  className = "",
+  fit = "cover",
+}: {
+  label: string;
+  src?: string;
+  alt?: string;
+  className?: string;
+  fit?: "cover" | "contain";
+}) {
   if (src) {
-    return <img src={src} alt={alt ?? label} className={`object-cover ${className}`} />;
+    const fitClass = fit === "contain" ? "object-contain" : "object-cover";
+    return <img src={src} alt={alt ?? label} className={`${fitClass} ${className}`} />;
   }
   return (
     <div className={`flex items-center justify-center bg-slate-200/70 text-center text-[11px] font-medium text-slate-400 ${className}`}>
@@ -96,7 +109,7 @@ const testimonios = [
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col bg-white">
+    <div className="flex min-h-screen flex-col overflow-x-clip bg-[#f9fbfb]">
       {/* ============ HEADER ============ */}
       <header className="sticky top-0 z-50 border-b border-border bg-white">
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-6 px-5">
@@ -167,9 +180,22 @@ export default function Home() {
           </div>
 
           {/* Composición de imágenes */}
-          <div className="relative min-h-[440px]">
-            <Ph src="/img-bg-of.jpg" label="imagen: persona + perro (hero)" className="absolute inset-0 h-full w-full rounded-3xl" />
-            <Ph src="/img-mockup.png" label="mockup: celular (app)" className="absolute -right-2 top-6 h-96 w-48 rounded-[2rem] !bg-white shadow-2xl" />
+          <div className="relative">
+            {/* Foto principal (recuadro con máscara redondeada) */}
+            <Ph
+              src="/img-bg-of.jpg"
+              alt="Familia con su mascota"
+              label="imagen: persona + perro (hero)"
+              className="h-[440px] w-full rounded-3xl"
+            />
+            {/* Celular flotante: completo (sin recorte) + movimiento suave */}
+            <Ph
+              src="/img-mockup.png"
+              alt="App IdentiPet"
+              label="mockup: celular (PNG transparente)"
+              fit="contain"
+              className="ip-float absolute -right-2 top-4 h-[440px] w-auto drop-shadow-2xl sm:-right-6"
+            />
           </div>
         </div>
       </section>
