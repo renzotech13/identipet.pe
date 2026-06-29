@@ -96,21 +96,31 @@ export const sectionComponents: Config["components"] = {
       <section>
         <div className="mx-auto grid max-w-7xl gap-10 px-5 pt-12 pb-0 lg:grid-cols-2">
           <div>
-            <h1 className="text-5xl font-extrabold leading-[1.05] tracking-tight text-secondary">
+            <h1 className="whitespace-pre-line text-5xl font-extrabold leading-[1.05] tracking-tight text-secondary">
               {titleStart} <span className="text-primary">{titleHighlight}</span> <Heart className="inline h-10 w-10 fill-primary text-primary" />
             </h1>
-            <p className="mt-5 max-w-md text-lg text-muted">{subtitle}</p>
+            <p className="mt-5 max-w-md whitespace-pre-line text-lg text-muted">{subtitle}</p>
             <div className="mt-7 flex flex-wrap gap-4">
               <Link href="/registro-mascota" className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3.5 font-semibold text-white hover:bg-primary-dark"><PawPrint className="h-5 w-5" /> {btnPrimary}</Link>
               <a href="#" className="inline-flex items-center gap-2 rounded-xl border border-border px-6 py-3.5 font-semibold text-secondary hover:border-primary"><span className="grid h-7 w-7 place-items-center rounded-full bg-primary text-white"><Play className="h-3.5 w-3.5 fill-current" /></span>{btnSecondary}</a>
             </div>
             <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
-              {(trust ?? []).map((t: { top: string; bottom: string }, i: number) => (
-                <div key={i} className="flex items-center gap-2">
-                  {i === 0 ? <PawPrint className="h-7 w-7 text-primary" /> : i === 1 ? <ShieldCheck className="h-7 w-7 text-primary" /> : <div className="flex text-amber-400">{[...Array(5)].map((_, k) => <Star key={k} className="h-4 w-4 fill-current" />)}</div>}
-                  <div className="text-xs"><div className="font-bold text-secondary">{t.top}</div><div className="text-muted">{t.bottom}</div></div>
-                </div>
-              ))}
+              {(trust ?? []).map((t: { top: string; bottom: string }, i: number) =>
+                i === 2 ? (
+                  <div key={i}>
+                    <div className="flex items-center gap-2">
+                      <div className="flex text-amber-400">{[...Array(5)].map((_, k) => <Star key={k} className="h-4 w-4 fill-current" />)}</div>
+                      <span className="text-xs font-bold text-secondary">{t.top}</span>
+                    </div>
+                    <div className="mt-0.5 text-xs text-muted">{t.bottom}</div>
+                  </div>
+                ) : (
+                  <div key={i} className="flex items-center gap-2">
+                    {i === 0 ? <PawPrint className="h-7 w-7 text-primary" /> : <ShieldCheck className="h-7 w-7 text-primary" />}
+                    <div className="text-xs"><div className="font-bold text-secondary">{t.top}</div><div className="text-muted">{t.bottom}</div></div>
+                  </div>
+                )
+              )}
             </div>
           </div>
           <div className="relative min-h-[440px]">
@@ -143,12 +153,12 @@ export const sectionComponents: Config["components"] = {
   NeedsBlock: {
     label: "Todo lo que necesita",
     fields: {
-      leftTitle: { type: "text", label: "Título izquierda" },
+      leftTitle: { type: "textarea", label: "Título izquierda (Enter = salto)" },
       leftHighlight: { type: "text", label: "Resaltado izquierda" },
       miniItems: { type: "array", label: "Mini features", arrayFields: { label: { type: "text" } } },
       img1: { ...imageField, label: "Mockup 1" },
       img2: { ...imageField, label: "Mockup 2" },
-      rightTitle: { type: "text", label: "Título derecha" },
+      rightTitle: { type: "textarea", label: "Título derecha (Enter = salto)" },
       rightHighlight: { type: "text", label: "Resaltado derecha" },
       benefits: { type: "array", label: "Beneficios", arrayFields: { title: { type: "text" }, text: { type: "textarea" } } },
       linkLabel: { type: "text", label: "Enlace inferior" },
@@ -168,7 +178,7 @@ export const sectionComponents: Config["components"] = {
       <section className="py-16">
         <div className="mx-auto grid max-w-7xl gap-10 px-5 lg:grid-cols-3">
           <div>
-            <h2 className="text-3xl font-extrabold leading-tight text-secondary">{leftTitle} <span className="text-primary">{leftHighlight}</span></h2>
+            <h2 className="whitespace-pre-line text-3xl font-extrabold leading-tight text-secondary">{leftTitle} <span className="text-primary">{leftHighlight}</span></h2>
             <div className="mt-7 grid grid-cols-4 gap-x-4 gap-y-6">
               {(miniItems ?? []).map((m: { label: string }, i: number) => {
                 const Icon = miniIcons[i % miniIcons.length];
@@ -314,19 +324,22 @@ export const sectionComponents: Config["components"] = {
     label: "CTA Descarga app",
     fields: {
       title: { type: "text", label: "Título" }, brand: { type: "text", label: "Marca grande" }, subtitle: { type: "textarea", label: "Subtítulo" },
-      dogImage: { ...imageField, label: "Imagen perro" }, phoneImage: { ...imageField, label: "Mockup celular" },
+      leftImage: { ...imageField, label: "Imagen izquierda" },
+      rightImages: { type: "array", label: "Imágenes derecha (duplica para agregar)", arrayFields: { image: imageField } },
     },
-    defaultProps: { title: "Descarga la app de", brand: "IdentiPet", subtitle: "Muy pronto podrás llevar todo IdentiPet en tu bolsillo." },
-    render: ({ title, brand, subtitle, dogImage, phoneImage }) => (
+    defaultProps: { title: "Descarga la app de", brand: "IdentiPet", subtitle: "Muy pronto podrás llevar todo IdentiPet en tu bolsillo.", rightImages: [{}] },
+    render: ({ title, brand, subtitle, leftImage, rightImages }) => (
       <section className="bg-primary">
         <div className="mx-auto grid max-w-7xl items-center gap-8 px-5 py-12 lg:grid-cols-[1fr_2fr_1fr]">
-          <Img src={dogImage} className="hidden h-40 rounded-2xl lg:block" />
+          <Img src={leftImage} className="hidden h-40 rounded-2xl lg:block" />
           <div className="text-center text-white">
             <h2 className="text-3xl font-extrabold">{title} <span className="block text-4xl">{brand}</span></h2>
-            <p className="mt-2 text-white/85">{subtitle}</p>
+            <p className="mt-2 whitespace-pre-line text-white/85">{subtitle}</p>
             <div className="mt-5 flex flex-wrap justify-center gap-3"><div className="grid h-12 w-40 place-items-center rounded-xl bg-secondary text-xs text-white/80">Google Play</div><div className="grid h-12 w-40 place-items-center rounded-xl bg-secondary text-xs text-white/80">App Store</div></div>
           </div>
-          <Img src={phoneImage} fit="contain" className="mx-auto hidden h-56 w-32 lg:block" />
+          <div className="hidden items-center justify-center gap-3 lg:flex">
+            {(rightImages ?? []).map((r: { image?: string }, i: number) => <Img key={i} src={r.image} fit="contain" className="h-56 w-32" />)}
+          </div>
         </div>
       </section>
     ),
