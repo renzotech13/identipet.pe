@@ -169,7 +169,7 @@ export default function Home() {
           {/* Composición de imágenes */}
           <div className="relative min-h-[440px]">
             <Ph src="/img-bg-of.jpg" label="imagen: persona + perro (hero)" className="absolute inset-0 h-full w-full rounded-3xl" />
-            <Ph label="mockup: celular (app)" className="absolute -right-2 top-6 h-96 w-48 rounded-[2rem] !bg-white shadow-2xl" />
+            <Ph src="/img-mockup.png" label="mockup: celular (app)" className="absolute -right-2 top-6 h-96 w-48 rounded-[2rem] !bg-white shadow-2xl" />
           </div>
         </div>
       </section>
