@@ -5,6 +5,7 @@ import type { Config } from "@measured/puck";
 import { Star } from "lucide-react";
 import { ImageField } from "./ImageField";
 import { sectionComponents } from "./sections";
+import { ml } from "./text";
 
 /* ---- mapas de clases ---- */
 const bgMap: Record<string, string> = {
@@ -97,9 +98,9 @@ export const config: Config = {
       render: ({ text, level, align, color }) => {
         const size = level === "h1" ? "text-5xl" : level === "h3" ? "text-2xl" : "text-3xl sm:text-4xl";
         const cls = `whitespace-pre-line font-extrabold tracking-tight ${size} ${alignMap[align]} ${colorMap[color]}`;
-        if (level === "h1") return <h1 className={cls}>{text}</h1>;
-        if (level === "h3") return <h3 className={cls}>{text}</h3>;
-        return <h2 className={cls}>{text}</h2>;
+        if (level === "h1") return <h1 className={cls}>{ml(text)}</h1>;
+        if (level === "h3") return <h3 className={cls}>{ml(text)}</h3>;
+        return <h2 className={cls}>{ml(text)}</h2>;
       },
     },
 
@@ -112,7 +113,7 @@ export const config: Config = {
         color: { type: "select", label: "Color", options: [{ label: "Gris", value: "muted" }, { label: "Navy", value: "secondary" }, { label: "Blanco", value: "white" }] },
       },
       defaultProps: { text: "Escribe aquí tu texto.", align: "left", color: "muted" },
-      render: ({ text, align, color }) => <p className={`whitespace-pre-line text-lg ${alignMap[align]} ${colorMap[color]}`}>{text}</p>,
+      render: ({ text, align, color }) => <p className={`whitespace-pre-line text-lg ${alignMap[align]} ${colorMap[color]}`}>{ml(text)}</p>,
     },
 
     /* ====== VALORACIÓN (estrellas) ====== */
@@ -200,8 +201,8 @@ export const config: Config = {
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
             {(items ?? []).map((it: { value: string; label: string }, i: number) => (
               <div key={i}>
-                <div className="text-3xl font-black">{it.value}</div>
-                <div className="mt-1 text-xs text-white/70">{it.label}</div>
+                <div className="text-3xl font-black">{ml(it.value)}</div>
+                <div className="mt-1 text-xs text-white/70">{ml(it.label)}</div>
               </div>
             ))}
           </div>
