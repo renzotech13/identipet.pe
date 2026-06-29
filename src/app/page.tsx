@@ -144,7 +144,7 @@ export default function Home() {
 
       {/* ============ HERO ============ */}
       <section>
-        <div className="mx-auto grid max-w-7xl items-center gap-10 px-5 py-12 lg:grid-cols-2">
+        <div className="mx-auto grid max-w-7xl gap-10 px-5 pt-12 pb-0 lg:grid-cols-2">
           <div>
             <h1 className="text-5xl font-extrabold leading-[1.05] tracking-tight text-secondary">
               Tu mascota merece una identidad para <span className="text-primary">toda la vida</span>{" "}
@@ -180,28 +180,28 @@ export default function Home() {
           </div>
 
           {/* Composición de imágenes */}
-          <div className="relative">
+          <div className="relative min-h-[440px]">
             {/* Foto principal (recuadro con máscara redondeada) */}
             <Ph
               src="/img-bg-of.jpg"
               alt="Familia con su mascota"
               label="imagen: persona + perro (hero)"
-              className="h-[440px] w-full rounded-3xl"
+              className="h-full min-h-[440px] w-full rounded-3xl"
             />
-            {/* Celular flotante: completo (sin recorte) + movimiento suave */}
+            {/* Celular flotante: completo, montado sobre la franja verde + movimiento suave */}
             <Ph
               src="/img-mockup.png"
               alt="App IdentiPet"
               label="mockup: celular (PNG transparente)"
               fit="contain"
-              className="ip-float absolute -right-2 top-4 h-[440px] w-auto drop-shadow-2xl sm:-right-6"
+              className="ip-float absolute -right-2 bottom-[-48px] z-30 h-[470px] w-auto drop-shadow-2xl sm:-right-6"
             />
           </div>
         </div>
       </section>
 
       {/* ============ BARRA DE FEATURES (verde) ============ */}
-      <section className="mx-auto max-w-7xl px-5">
+      <section className="relative z-10 mx-auto max-w-7xl px-5">
         <div className="grid grid-cols-2 gap-y-6 rounded-3xl bg-primary px-6 py-7 text-white sm:grid-cols-3 lg:grid-cols-5 lg:divide-x lg:divide-white/20">
           {featureBar.map(([Icon, label]) => (
             <div key={label} className="flex items-center gap-3 px-4">
