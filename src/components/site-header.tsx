@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { PawPrint } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
+import { signOutAction } from "@/app/actions/auth";
 
 export async function SiteHeader() {
   const supabase = await createClient();
@@ -23,9 +24,11 @@ export async function SiteHeader() {
               <Link href="/panel" className="rounded-lg border border-border px-4 py-2 text-sm font-semibold text-secondary hover:border-primary">
                 Mi panel
               </Link>
-              <Link href="/logout" className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary-dark">
-                Salir
-              </Link>
+              <form action={signOutAction}>
+                <button type="submit" className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary-dark">
+                  Salir
+                </button>
+              </form>
             </>
           ) : (
             <>

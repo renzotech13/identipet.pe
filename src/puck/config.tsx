@@ -3,6 +3,7 @@
 import type { ReactNode } from "react";
 import type { Config } from "@measured/puck";
 import { ImageField } from "./ImageField";
+import { sectionComponents } from "./sections";
 
 /* ---- mapas de clases ---- */
 const bgMap: Record<string, string> = {
@@ -30,7 +31,13 @@ export const config: Config = {
       <div className="min-h-screen bg-[#f9fbfb]">{children}</div>
     ),
   },
+  categories: {
+    Secciones: { components: ["SiteHeaderBlock", "HeroBlock", "FeatureBarBlock", "NeedsBlock", "StatsRibbonBlock", "CardsRowBlock", "BrandStripBlock", "TestimonialsBlock", "AppCtaBlock"] },
+    Básicos: { components: ["Section", "Columns", "Heading", "Text", "Button", "Image", "Stats", "Spacer"] },
+  },
   components: {
+    ...sectionComponents,
+
     /* ====== SECCIÓN (contenedor con fondo + slot) ====== */
     Section: {
       label: "Sección",

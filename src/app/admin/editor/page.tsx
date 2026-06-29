@@ -1,11 +1,10 @@
 import { redirect } from "next/navigation";
 import type { Data } from "@measured/puck";
 import { createClient } from "@/lib/supabase/server";
+import { defaultHomeData } from "@/puck/seed";
 import { Editor } from "./Editor";
 
 export const metadata = { title: "Editor del sitio — IdentiPet" };
-
-const emptyData: Data = { content: [], root: {} };
 
 export default async function EditorPage() {
   const supabase = await createClient();
@@ -18,7 +17,8 @@ export default async function EditorPage() {
   if (profile?.role !== "administrador") redirect("/panel");
 
   const { data: page } = await supabase.from("pages").select("data").eq("slug", "home").maybeSingle();
-  const initialData = (page?.data && Array.isArray((page.data as Data).content)) ? (page.data as Data) : emptyData;
+  const saved = page?.data as Data | undefined;
+  const initialData = saved && Array.isArray(saved.content) && saved.content.length > 0 ? saved : defaultHomeData;
 
   return <Editor initialData={initialData} />;
 }
