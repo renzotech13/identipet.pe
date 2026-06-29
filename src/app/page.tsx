@@ -25,8 +25,18 @@ import {
 
 export const metadata = { title: "IdentiPet — Identidad para toda la vida" };
 
-/* Placeholder de imagen (foto / mockup / logo / avatar) a reemplazar luego */
-function Ph({ label, className = "" }: { label: string; className?: string }) {
+/**
+ * Placeholder de imagen. Si le pasas `src`, muestra la imagen real;
+ * si no, dibuja el recuadro gris con la etiqueta.
+ *
+ * Las imágenes van en la carpeta `public/` y se referencian desde la raíz:
+ *   coloca el archivo en  public/img-bg-of.jpg
+ *   y úsalo como          <Ph src="/img-bg-of.jpg" label="..." className="..." />
+ */
+function Ph({ label, src, alt, className = "" }: { label: string; src?: string; alt?: string; className?: string }) {
+  if (src) {
+    return <img src={src} alt={alt ?? label} className={`object-cover ${className}`} />;
+  }
   return (
     <div className={`flex items-center justify-center bg-slate-200/70 text-center text-[11px] font-medium text-slate-400 ${className}`}>
       {label}
@@ -158,7 +168,7 @@ export default function Home() {
 
           {/* Composición de imágenes */}
           <div className="relative min-h-[440px]">
-            <Ph src="/src/app/img-bg-of.jpg" label="imagen: persona + perro (hero)" className="absolute inset-0 rounded-3xl" />
+            <Ph src="/img-bg-of.jpg" label="imagen: persona + perro (hero)" className="absolute inset-0 h-full w-full rounded-3xl" />
             <Ph label="mockup: celular (app)" className="absolute -right-2 top-6 h-96 w-48 rounded-[2rem] !bg-white shadow-2xl" />
           </div>
         </div>
