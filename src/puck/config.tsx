@@ -46,8 +46,15 @@ const gridColsMap: Record<number, string> = { 2: "md:grid-cols-2", 3: "md:grid-c
 
 export const config: Config = {
   root: {
-    render: ({ children }: { children?: ReactNode }) => (
-      <div className="min-h-screen bg-[#f9fbfb]">{children}</div>
+    fields: {
+      customCss: { type: "textarea", label: "CSS personalizado (se aplica a toda la página)" },
+    },
+    defaultProps: { customCss: "" },
+    render: ({ children, customCss }: { children?: ReactNode; customCss?: string }) => (
+      <div className="min-h-screen bg-[#f9fbfb]">
+        {customCss ? <style dangerouslySetInnerHTML={{ __html: customCss }} /> : null}
+        {children}
+      </div>
     ),
   },
   categories: {
@@ -68,11 +75,13 @@ export const config: Config = {
         padding: { type: "select", label: "Espaciado", options: [
           { label: "Pequeño", value: "sm" }, { label: "Mediano", value: "md" }, { label: "Grande", value: "lg" }, { label: "Ninguno", value: "none" },
         ]},
+        cssId: { type: "text", label: "ID CSS (para tu CSS personalizado)" },
+        cssClass: { type: "text", label: "Clases CSS" },
         content: { type: "slot" },
       },
       defaultProps: { background: "light", padding: "md" },
-      render: ({ background, padding, content: Content }) => (
-        <section className={`${bgMap[background] ?? ""} ${padMap[padding] ?? ""}`}>
+      render: ({ background, padding, cssId, cssClass, content: Content }) => (
+        <section id={cssId || undefined} className={`${bgMap[background] ?? ""} ${padMap[padding] ?? ""} ${cssClass ?? ""}`}>
           <div className="mx-auto max-w-7xl px-5">
             <Content />
           </div>
@@ -86,16 +95,18 @@ export const config: Config = {
       fields: {
         count: { type: "select", label: "N° columnas", options: [{ label: "2", value: 2 }, { label: "3", value: 3 }, { label: "4", value: 4 }] },
         gap: { type: "select", label: "Separación", options: [{ label: "Pequeña", value: "gap-4" }, { label: "Mediana", value: "gap-6" }, { label: "Grande", value: "gap-10" }] },
+        cssId: { type: "text", label: "ID CSS" },
+        cssClass: { type: "text", label: "Clases CSS" },
         col1: { type: "slot" },
         col2: { type: "slot" },
         col3: { type: "slot" },
         col4: { type: "slot" },
       },
       defaultProps: { count: 2, gap: "gap-6" },
-      render: ({ count, gap, col1: C1, col2: C2, col3: C3, col4: C4 }) => {
+      render: ({ count, gap, cssId, cssClass, col1: C1, col2: C2, col3: C3, col4: C4 }) => {
         const cols = [C1, C2, C3, C4].slice(0, Number(count));
         return (
-          <div className={`grid grid-cols-1 ${gridColsMap[Number(count)] ?? "md:grid-cols-2"} ${gap}`}>
+          <div id={cssId || undefined} className={`grid grid-cols-1 ${gridColsMap[Number(count)] ?? "md:grid-cols-2"} ${gap} ${cssClass ?? ""}`}>
             {cols.map((Col, i) => <div key={i}><Col /></div>)}
           </div>
         );
@@ -111,12 +122,13 @@ export const config: Config = {
         level: { type: "select", label: "Nivel (SEO)", options: [{ label: "H1", value: "h1" }, { label: "H2", value: "h2" }, { label: "H3", value: "h3" }] },
         align: { type: "select", label: "Alineación", options: [{ label: "Izquierda", value: "left" }, { label: "Centro", value: "center" }, { label: "Derecha", value: "right" }] },
         color: { type: "select", label: "Color", options: [{ label: "Navy", value: "secondary" }, { label: "Verde", value: "primary" }, { label: "Blanco", value: "white" }] },
+        cssClass: { type: "text", label: "Clases CSS" },
       },
       defaultProps: { text: "Título nuevo", size: "auto", level: "h2", align: "left", color: "secondary" },
-      render: ({ text, size, level, align, color }) => {
+      render: ({ text, size, level, align, color, cssClass }) => {
         const auto = level === "h1" ? "text-5xl" : level === "h3" ? "text-2xl" : "text-3xl sm:text-4xl";
         const sizeCls = size && size !== "auto" ? textSizeMap[size] : auto;
-        const cls = `whitespace-pre-line font-extrabold tracking-tight ${sizeCls} ${alignMap[align]} ${colorMap[color]}`;
+        const cls = `whitespace-pre-line font-extrabold tracking-tight ${sizeCls} ${alignMap[align]} ${colorMap[color]} ${cssClass ?? ""}`;
         if (level === "h1") return <h1 className={cls}>{ml(text)}</h1>;
         if (level === "h3") return <h3 className={cls}>{ml(text)}</h3>;
         return <h2 className={cls}>{ml(text)}</h2>;
@@ -132,9 +144,10 @@ export const config: Config = {
         weight: { type: "select", label: "Grosor", options: [{ label: "Normal", value: "font-normal" }, { label: "Medio", value: "font-medium" }, { label: "Negrita", value: "font-bold" }] },
         align: { type: "select", label: "Alineación", options: [{ label: "Izquierda", value: "left" }, { label: "Centro", value: "center" }, { label: "Derecha", value: "right" }] },
         color: { type: "select", label: "Color", options: [{ label: "Gris", value: "muted" }, { label: "Navy", value: "secondary" }, { label: "Blanco", value: "white" }] },
+        cssClass: { type: "text", label: "Clases CSS" },
       },
       defaultProps: { text: "Escribe aquí tu texto.", size: "lg", weight: "font-normal", align: "left", color: "muted" },
-      render: ({ text, size, weight, align, color }) => <p className={`whitespace-pre-line ${textSizeMap[size] ?? "text-lg"} ${weight} ${alignMap[align]} ${colorMap[color]}`}>{ml(text)}</p>,
+      render: ({ text, size, weight, align, color, cssClass }) => <p className={`whitespace-pre-line ${textSizeMap[size] ?? "text-lg"} ${weight} ${alignMap[align]} ${colorMap[color]} ${cssClass ?? ""}`}>{ml(text)}</p>,
     },
 
     /* ====== ICONO ====== */
